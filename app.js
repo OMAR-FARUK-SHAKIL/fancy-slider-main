@@ -4,7 +4,7 @@ const galleryHeader = document.querySelector('.gallery-header');
 const searchBtn = document.getElementById('search-btn');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
-//spinner fuction
+//spinner function
 const toggleSpinner = () => {
   const spin = document.getElementById('spinner');
   spin.classList.toggle('d-none');
@@ -26,11 +26,11 @@ input.addEventListener("keyup", function (event) {
 const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 // show images 
 const showImages = (images) => {
-  if(images.length == 0 ){
+  if (images.length == 0) {
     errorHandler(true);
   }
-  else{ errorHandler(false);}
- 
+  else { errorHandler(false); }
+
   imagesArea.style.display = 'block';
   gallery.innerHTML = '';
   // show gallery title
@@ -45,54 +45,41 @@ const showImages = (images) => {
 }
 
 const getImages = (query) => {
-  //console.log(query);
   toggleSpinner();
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
-    .then(data =>  showImages(data.hits))
-      // console.log(data))
-      // showImages(data.hits))
-    .catch(error => console.log(error))
-      // errorHandler(error))
-    // console.log(error))
+    .then(data => showImages(data.hits))
+    // showImages(data.hits))
 }
+
 //errorHandler
 const errorHandler = (value) => {
   let ero = document.getElementById('error-message');
-  if(value == true){ero.classList.remove('d-none');}
-  if(value==false){
+  if (value == true) { ero.classList.remove('d-none'); }
+  if (value == false) {
     ero.classList.add('d-none');
   }
-  
-  // ero.style.display='block';
 }
+
 let slideIndex = 0;
 const selectItem = (event, img) => {
   //console.log('event',event,'img',img);
   let element = event.target;
-  element.classList.add('added');
+  element.classList.toggle('added');
 
   let item = sliders.indexOf(img);
-  //console.log('item=',item,'ele=',element)
-  //console.log('slider=',sliders);
   if (item === -1) {
     sliders.push(img);
   } else {
-    element.classList.remove('added');
-    sliders.pop();
-    console.log('after item=',item);
+    // sliders.pop();
+    delete sliders[item];
     // alert('Hey, Already added !')
   }
 }
 var timer
 const createSlider = () => {
   //// check slider image length
-  // if (sliders.length < 2) {
-  //   alert('Select at least 2 image.')
-  //   return;
-  // }
   //// crate slider previous next area
-  //
   sliderContainer.innerHTML = '';
   const prevNext = document.createElement('div');
   prevNext.className = "prev-next d-flex w-100 justify-content-between align-items-center";
@@ -107,9 +94,7 @@ const createSlider = () => {
   imagesArea.style.display = 'none';
   const durationInput = document.getElementById('duration').value;
   // Math.abs(durationInput);
-   const duration = Math.abs(durationInput) || 1000;
-  //const duration = document.getElementById('duration');
-  //console.log(duration.value);
+  const duration = Math.abs(durationInput) || 1000;
   sliders.forEach(slide => {
     let item = document.createElement('div')
     item.className = "slider-item";
